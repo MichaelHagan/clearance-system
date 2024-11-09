@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
+import ClearanceRequest from './clearance-request';
 
 export interface UserAttributes {
   id: number;
@@ -81,5 +82,7 @@ User.init(userDefinition, {
   sequelize,
   tableName: 'users',
 });
+
+User.hasMany(ClearanceRequest)
 
 export default User;
