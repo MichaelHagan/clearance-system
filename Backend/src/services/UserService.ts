@@ -34,7 +34,8 @@ const loginUser = async (identifier: string | null, password: string) => {
 /**
  * Add one user.
  */
-const addOne = (user: UserAttributes) => {
+const addOne = async(user: UserAttributes) => {
+  user.password = await bcrypt.hash(user.password, 10);
   return UserRepo.add(user);
 };
 
@@ -46,7 +47,12 @@ const updateOne = async (user: UserAttributes) => {
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'User not found');
   }
-  // Return user
+  // Check if the password field is present and hash it.
+  if (user.password) {
+    user.password = await bcrypt.hash(user.password, 10);
+  }
+
+  // Update the user
   return UserRepo.update(user);
 };
 
