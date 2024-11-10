@@ -1,4 +1,4 @@
-import { ApprovalAttributes } from '../models/approval';
+import { ApprovalAttributes, ApprovalCreationAttributes } from '../models/approval';
 import Approval from '../models/approval';
 
 // **** Functions **** //
@@ -26,16 +26,30 @@ const getAll = async () => {
 }
 
 /**
+ * Get all approvals by user ID.
+ */
+const getAllByClearanceRequestId = async (ClearanceRequestId: number) => {
+  return Approval.findAll({ where: { ClearanceRequestId } });
+}
+
+/**
+ * Get all approvals by department ID.
+ */
+const getAllByDepartmentId = async (DepartmentId: number) => {
+  return Approval.findAll({ where: { DepartmentId } });
+}
+
+/**
  * Add one approval.
  */
-const add = async (approval: ApprovalAttributes) => {
+const add = async (approval: ApprovalCreationAttributes) => {
   await Approval.create(approval);
 }
 
 /**
  * Update an approval.
  */
-const update = async (approval: ApprovalAttributes) => {
+const update = async (approval: ApprovalCreationAttributes) => {
   await Approval.update(approval, { where: { id: approval.id } });
 }
 
@@ -50,6 +64,8 @@ export default {
   getOneById,
   persists,
   getAll,
+  getAllByClearanceRequestId,
+  getAllByDepartmentId,
   add,
   update,
   delete: deleteApproval,

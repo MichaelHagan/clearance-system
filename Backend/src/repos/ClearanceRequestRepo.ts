@@ -1,4 +1,4 @@
-import { ClearanceRequestAttributes } from '../models/clearance-request';
+import { ClearanceRequestAttributes, ClearanceRequestCreationAttributes } from '../models/clearance-request';
 import ClearanceRequest from '../models/clearance-request';
 
 // **** Functions **** //
@@ -9,6 +9,15 @@ import ClearanceRequest from '../models/clearance-request';
 const getOneById = async (id: number) => {
   return ClearanceRequest.findByPk(id);
 }
+
+/**
+ * Get one clearance request by User ID.
+ */
+const getOneByUserId = async (userId: number) => {
+  // Implement the logic to get a clearance request by user ID
+  // Example:
+  return ClearanceRequest.findOne({ where: { UserId: userId } });
+};
 
 /**
  * See if a clearance request with the given id exists.
@@ -28,8 +37,8 @@ const getAll = async () => {
 /**
  * Add one clearance request.
  */
-const add = async (clearanceRequest: ClearanceRequestAttributes) => {
-  await ClearanceRequest.create(clearanceRequest);
+const add = async (clearanceRequest: ClearanceRequestCreationAttributes) => {
+  return await ClearanceRequest.create(clearanceRequest);
 }
 
 /**
@@ -48,6 +57,7 @@ const deleteClearanceRequest = async (id: number) => {
 
 export default {
   getOneById,
+  getOneByUserId,
   persists,
   getAll,
   add,

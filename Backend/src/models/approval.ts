@@ -4,18 +4,18 @@ import { sequelize } from '../config/database'; // Adjust the import based on yo
 export interface ApprovalAttributes {
   id: number;
   status: 'pending' | 'approved' | 'rejected';
-  approval_date: Date;
+  approval_date: Date | null; // Changed to allow null
   comments: string;
   DepartmentId: number;
   ClearanceRequestId: number;
 }
 
-interface ApprovalCreationAttributes extends Optional<ApprovalAttributes, 'id'> {}
+export interface ApprovalCreationAttributes extends Optional<ApprovalAttributes, 'id'> {}
 
 class Approval extends Model<ApprovalAttributes, ApprovalCreationAttributes> implements ApprovalAttributes {
   public id!: number;
   public status!: 'pending' | 'approved' | 'rejected';
-  public approval_date!: Date;
+  public approval_date!: Date | null; // Changed to allow null
   public comments!: string;
   public DepartmentId!: number;
   public ClearanceRequestId!: number;
@@ -44,7 +44,7 @@ const approvalDefinition = {
   },
   approval_date: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true, // Ensure this is set to true
   },
   comments: {
     type: DataTypes.TEXT,

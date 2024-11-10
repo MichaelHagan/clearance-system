@@ -4,6 +4,8 @@ import User from '@src/models/user';
 import Role  from '@src/models/role';
 import { roleSeeder } from '@src/seeders/roleSeeder';
 import { userSeeder } from '@src/seeders/userSeeder';
+import { departmentSeeder } from '@src/seeders/departmentSeeder';
+import Department from '@src/models/department';
 
 dotenv.config();
 
@@ -38,6 +40,7 @@ const runSeeders = async (): Promise<void> =>{
     // Run seeders sequentially
     await roleSeeder.up(null, Role.sequelize);
     await userSeeder.up(null, User.sequelize);
+    await departmentSeeder.up(null,Department.sequelize);
     console.log('Seeders completed successfully');
     }
   } catch (error) {

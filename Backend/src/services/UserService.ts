@@ -25,7 +25,7 @@ const loginUser = async (identifier: string | null, password: string) => {
     };
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '5h' });
     
-    return { accessToken: accessToken, id: row.id, name: row.userName, phoneNumber: row.phoneNumber };
+    return { accessToken: accessToken, id: row.id, name: row.userName, phoneNumber: row.phoneNumber, role: row.RoleId };
   } else {
     throw new RouteError(HttpStatusCodes.UNAUTHORIZED, 'Invalid Credentials');
   }

@@ -1,7 +1,8 @@
 import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '../common/HttpStatusCodes';
 import ClearanceRequestRepo from '@src/repos/ClearanceRequestRepo';
-import { ClearanceRequestAttributes } from '@src/models/clearance-request';
+import { ClearanceRequestAttributes,ClearanceRequestCreationAttributes } from '@src/models/clearance-request';
+import addApprovalsForClearanceRequest from '../utils/addApprovals';
 
 /**
  * Get all clearance requests.
@@ -18,10 +19,23 @@ const getOneById = async (id: number) => {
 };
 
 /**
+ * Get one clearance request by User ID.
+ */
+const getOneByUserId = async (userId: number) => {
+  return ClearanceRequestRepo.getOneByUserId(userId);
+};
+
+/**
  * Add one clearance request.
  */
-const addOne = async (clearanceRequest: ClearanceRequestAttributes) => {
-  return ClearanceRequestRepo.add(clearanceRequest);
+const addOne = async (clearanceRequest: ClearanceRequestCreationAttributes) => {
+  const existingRequest = await ClearanceRequestRepo.getOneByUserId(clearanceRequest.UserId);
+  if (existingRequest) {
+    throw new RouteError(HttpStatusCodes.CONFLICT, 'Clearance request already exists');
+  }
+  const newClearanceRequest = await ClearanceRequestRepo.add(clearanceRequest);
+  await addApprovalsForClearanceRequest(newClearanceRequest.id);
+  return newClearanceRequest;
 };
 
 /**
@@ -52,6 +66,7 @@ const delete_ = async (id: number) => {
 export default {
   getAll,
   getOneById,
+  getOneByUserId,
   addOne,
   updateOne,
   delete: delete_,

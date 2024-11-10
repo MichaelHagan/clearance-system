@@ -59,3 +59,34 @@ export const deleteApproval = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
+
+// Get all approvals by user ID
+export const getApprovalsByClearanceRequestId = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const approvals = await ApprovalService.getAllByClearanceRequestId(Number(req.params.ClearanceRequestId));
+    res.status(200).json(approvals);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get all approvals by department ID
+export const getApprovalsByDepartmentId = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const approvals = await ApprovalService.getAllByDepartmentId(Number(req.params.departmentId));
+    res.status(200).json(approvals);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get all approvals by user ID
+export const getApprovalsByUserId = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = parseInt(req.params.userId, 10);
+    const approvals = await ApprovalService.getAllByUserId(userId);
+    res.status(200).json(approvals);
+  } catch (err) {
+    next(err);
+  }
+};

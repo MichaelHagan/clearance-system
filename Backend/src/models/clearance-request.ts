@@ -9,7 +9,7 @@ export interface ClearanceRequestAttributes {
   UserId: number;
 }
 
-interface ClearanceRequestCreationAttributes extends Optional<ClearanceRequestAttributes, 'id'> {}
+export interface ClearanceRequestCreationAttributes extends Optional<ClearanceRequestAttributes, 'id'> {}
 
 
 class ClearanceRequest extends Model<ClearanceRequestAttributes, ClearanceRequestCreationAttributes> implements ClearanceRequestAttributes {

@@ -24,7 +24,7 @@ const departmentDefinition = {
     autoIncrement: true,
   },
   name: {
-    type: DataTypes.STRING(30),
+    type: DataTypes.STRING,
     allowNull: false,
   },
 }

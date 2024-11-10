@@ -35,6 +35,20 @@ export const getClearanceRequestById = async (req: Request, res: Response, next:
   }
 };
 
+// Get a single clearance request by User ID
+export const getClearanceRequestByUserId = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const clearanceRequest = await ClearanceRequestService.getOneByUserId(Number(req.params.userId));
+    if (clearanceRequest) {
+      res.status(200).json(clearanceRequest);
+    } else {
+      res.status(404).json({ error: 'Clearance request not found' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Update a clearance request by ID
 export const updateClearanceRequest = async (req: Request, res: Response, next: NextFunction) => {
   try {
