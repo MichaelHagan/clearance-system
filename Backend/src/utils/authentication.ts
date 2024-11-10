@@ -13,11 +13,12 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     return;
   }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, payload: any) => {
     if (err) {
       res.status(403).send();
       return;
     }
+    req.role = payload.role;
     next();
   });
 };

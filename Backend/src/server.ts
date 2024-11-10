@@ -8,6 +8,9 @@ import {sequelize as db} from '@src/config/database';
 
 import indexRouter from '@src/routes/index';
 import usersRouter from '@src/routes/UserRoutes';
+import approvalRouter from '@src/routes/ApprovalRoutes';
+import departmentRouter from '@src/routes/DepartmentRoutes';
+import clearanceRequestRouter from '@src/routes/ClearanceRequestRoutes';
 
 const app = express();
 
@@ -23,6 +26,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/approvals', approvalRouter);
+app.use('/departments', departmentRouter);
+app.use('/clearance', clearanceRequestRouter);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
