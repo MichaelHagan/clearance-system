@@ -38,7 +38,10 @@ export const getApprovalById = async (req: Request, res: Response, next: NextFun
 // Update an approval by ID
 export const updateApproval = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await ApprovalService.updateOne(req.body);
+
+    let {id, userId} = req.params;
+
+    await ApprovalService.updateOne(req.body, parseInt(id), parseInt(userId));
     const updatedApproval = await ApprovalService.getOneById(Number(req.params.id));
     if (updatedApproval) {
       res.status(200).json(updatedApproval);

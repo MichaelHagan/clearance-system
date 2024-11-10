@@ -1,4 +1,4 @@
-import { UserAttributes } from '../models/user';
+import { UserCreationAttributes } from '../models/user';
 import User from '../models/user';
 import { Op } from 'sequelize';
 
@@ -58,14 +58,14 @@ const getOneByPhoneOrEmail = async (identifier: string) => {
 /**
  * Add one user.
  */
-  const add =async (user: UserAttributes)=> {
-  await User.create(user);
+  const add =async (user: UserCreationAttributes)=> {
+  return await User.create(user);
 }
 
 /**
  * Update a user.
  */
-  const update = async(user: UserAttributes)=> {
+  const update = async(user: UserCreationAttributes)=> {
   await User.update(user, { where: { id: user.id } });
 }
 
