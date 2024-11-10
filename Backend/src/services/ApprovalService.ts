@@ -42,6 +42,11 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number, userI
     throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User does not belong to the department of the approval');
   }
 
+  // Update the approval date if status is approved
+  if (approval.status === 'approved') {
+    approval.approval_date = new Date();
+  }
+
   // Update the approval
   return ApprovalRepo.update(approval);
 };
