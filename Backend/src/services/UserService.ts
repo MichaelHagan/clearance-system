@@ -50,13 +50,6 @@ const addOne = async (user: UserCreationAttributes) => {
 };
 
 /**
- * Add one user.
- */
-const addOne2 = async(user: UserCreationAttributes) => {
-  return 
-};
-
-/**
  * Update one user.
  */
 const updateOne = async (user: UserAttributes) => {
