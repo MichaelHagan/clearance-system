@@ -1,9 +1,10 @@
 import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '../common/HttpStatusCodes';
 import UserRepo from '@src/repos/UserRepo';
-import { UserAttributes } from '@src/models/user';
+import { UserAttributes, UserCreationAttributes } from '@src/models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { addUserDepartmentPair } from '../repos/UserDepartmentRepo';
 
 /**
  * Get all users.
@@ -37,9 +38,15 @@ const loginUser = async (identifier: string | null, password: string) => {
 /**
  * Add one user.
  */
-const addOne = async(user: UserAttributes) => {
+const addOne = async (user: UserCreationAttributes) => {
   user.password = await bcrypt.hash(user.password, 10);
-  return UserRepo.add(user);
+  const newUser = await UserRepo.add(user);
+
+  if (user.RoleId == 2 && user.DepartmentId) {
+    await addUserDepartmentPair(newUser.id, user.DepartmentId);
+  }
+
+  return newUser;
 };
 
 /**

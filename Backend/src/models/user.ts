@@ -17,7 +17,9 @@ export interface UserAttributes {
   RoleId: number;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+export interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {
+  DepartmentId?: number; // Optional field for DepartmentId
+}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
@@ -86,6 +88,5 @@ User.init(userDefinition, {
 });
 
 User.hasMany(ClearanceRequest);
-User.belongsToMany(Department, { through: UserDepartment });
 
 export default User;

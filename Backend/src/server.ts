@@ -25,9 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
 app.use('/', indexRouter);
+app.use('/departments', departmentRouter);
 app.use('/users', usersRouter);
 app.use('/approvals', approvalRouter);
-app.use('/departments', departmentRouter);
 app.use('/clearance', clearanceRequestRouter);
 
 // catch 404 and forward to error handler

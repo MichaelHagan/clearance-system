@@ -1,9 +1,9 @@
 import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '../common/HttpStatusCodes';
 import ApprovalRepo from '@src/repos/ApprovalRepo';
-import { ApprovalAttributes, ApprovalCreationAttributes } from '@src/models/approval';
+import { ApprovalCreationAttributes } from '@src/models/approval';
 import ClearanceRequestService from './ClearanceRequestService';
-import UserDepartment from '@src/models/userDepartment';
+import { userBelongsToDepartment } from '../repos/UserDepartmentRepo';
 
 /**
  * Get all approvals.
@@ -36,15 +36,15 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number, userI
   }
 
   // Check if the user belongs to the department of the approval
-  const userDepartment = await UserDepartment.findOne({
-    where: {
-      UserId: userId,
-      DepartmentId: approval.DepartmentId,
-    },
-  });
+  const userDepartment = await userBelongsToDepartment(userId, approval.DepartmentId);
 
   if (!userDepartment) {
     throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User does not belong to the department of the approval');
+  }
+
+  // Update the approval date if status is approved
+  if (approval.status === 'approved') {
+    approval.approval_date = new Date();
   }
 
   // Update the approval
