@@ -21,11 +21,14 @@ const loginUser = async (identifier: string | null, password: string) => {
   if (await bcrypt.compare(password, row.password)) {
     const user = {
       id: row.id,
-      name: row.userName
+      userName: row.userName,
+      role: row.RoleId, 
+      firstName: row.firstName, 
+      lastName:row.lastName
     };
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '5h' });
     
-    return { accessToken: accessToken, id: row.id, name: row.userName, phoneNumber: row.phoneNumber, role: row.RoleId };
+    return accessToken;
   } else {
     throw new RouteError(HttpStatusCodes.UNAUTHORIZED, 'Invalid Credentials');
   }
