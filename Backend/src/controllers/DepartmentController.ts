@@ -4,8 +4,8 @@ import DepartmentService from '@src/services/DepartmentService';
 // Create a new department
 export const createDepartment = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await DepartmentService.addOne(req.body);
-    res.status(201).json(req.body);
+    const department = await DepartmentService.addOne(req.body);
+    res.status(201).json(department);
   } catch (error) {
     next(error);
   }

@@ -29,7 +29,7 @@ const getAll = async () => {
  * Add one department.
  */
 const add = async (department: DepartmentAttributes) => {
-  await Department.create(department);
+  return await Department.create(department);
 }
 
 /**

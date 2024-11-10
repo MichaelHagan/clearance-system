@@ -4,8 +4,8 @@ import ClearanceRequestService from '@src/services/ClearanceRequestService';
 // Create a new clearance request
 export const createClearanceRequest = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await ClearanceRequestService.addOne(req.body);
-    res.status(201).json(req.body);
+    const clearance = await ClearanceRequestService.addOne(req.body);
+    res.status(201).json(clearance);
   } catch (error) {
     next(error);
   }
