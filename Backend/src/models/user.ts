@@ -1,5 +1,8 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
+import ClearanceRequest from './clearance-request';
+import Department from './department';
+import UserDepartment from './userDepartment';
 
 export interface UserAttributes {
   id: number;
@@ -14,7 +17,9 @@ export interface UserAttributes {
   RoleId: number;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+export interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {
+  DepartmentId?: number; // Optional field for DepartmentId
+}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
@@ -81,5 +86,7 @@ User.init(userDefinition, {
   sequelize,
   tableName: 'users',
 });
+
+User.hasMany(ClearanceRequest);
 
 export default User;

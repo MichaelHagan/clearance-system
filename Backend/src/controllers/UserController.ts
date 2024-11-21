@@ -4,8 +4,8 @@ import UserService from '@src/services/UserService';
 // Create a new user
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await UserService.addOne(req.body);
-    res.status(201).json(req.body);
+    const user = await UserService.addOne(req.body);
+    res.status(201).json(user);
   } catch (error) {
     next(error);
   }
