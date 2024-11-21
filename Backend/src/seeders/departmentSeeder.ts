@@ -4,9 +4,15 @@ import Department from '../models/department';
 
 const seed = async (): Promise<{ name: string }[]> => {
   return [
-    { name: 'Computer Science' },
-    { name: 'Mathematics' },
-    { name: 'Physics' },
+    { name: 'College Bursar' },
+    { name: 'College Registrar' },
+    { name: 'Hall of Residence' },
+    { name: 'University Library' },
+    { name: 'Student Guide' },
+    { name: 'Police Post' },
+    { name: 'Games Union' },
+    { name: 'University Hospital' },
+    { name: 'University Bursar' }
   ];
 };
 
