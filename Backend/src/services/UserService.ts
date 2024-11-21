@@ -4,7 +4,10 @@ import UserRepo from '@src/repos/UserRepo';
 import { UserAttributes, UserCreationAttributes } from '@src/models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { addUserDepartmentPair } from '../repos/UserDepartmentRepo';
+import { addUserDepartmentPair, getDepartmentIdByUserId } from '../repos/UserDepartmentRepo';
+import ClearanceRequestService from './ClearanceRequestService';
+import { getRoleTypeById } from '@src/utils/getRoleTypeById';
+import DepartmentService from './DepartmentService';
 
 /**
  * Get all users.
@@ -20,12 +23,16 @@ const loginUser = async (identifier: string | null, password: string) => {
   }
 
   if (await bcrypt.compare(password, row.password)) {
+    const DepartmentId = await getDepartmentIdByUserId(row.id);
     const user = {
       id: row.id,
       userName: row.userName,
       role: row.RoleId, 
+      roleName: getRoleTypeById(row.RoleId),
       firstName: row.firstName, 
-      lastName:row.lastName
+      lastName: row.lastName,
+      DepartmentId: DepartmentId || null,
+      department: DepartmentId ? await DepartmentService.getOneById(DepartmentId) : null
     };
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '5h' });
     
@@ -46,7 +53,16 @@ const addOne = async (user: UserCreationAttributes) => {
     await addUserDepartmentPair(newUser.id, user.DepartmentId);
   }
 
-  return newUser;
+  if(user.RoleId == 3 || user.RoleId == 4) {
+    ClearanceRequestService.addOne({ status:'pending', type: (user.RoleId == 3? 'staff':'student'), UserId: newUser.id });
+  }
+
+  const DepartmentId = await getDepartmentIdByUserId(newUser.id);
+  return {
+    ...newUser,
+    DepartmentId: DepartmentId || null,
+    department: DepartmentId ? await DepartmentService.getOneById(DepartmentId) : null
+  };
 };
 
 /**
@@ -82,7 +98,13 @@ const delete_ = async (id: number) => {
  * Get a user by ID.
  */
 const getOneById = async (id: number) => {
-  return UserRepo.getOneById(id);
+  const user = await UserRepo.getOneById(id);
+  const DepartmentId = await getDepartmentIdByUserId(id);
+  return {
+    ...user,
+    DepartmentId: DepartmentId || null,
+    department: DepartmentId ? await DepartmentService.getOneById(DepartmentId) : null
+  };
 };
 
 /**

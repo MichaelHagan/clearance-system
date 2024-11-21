@@ -13,3 +13,12 @@ export const userBelongsToDepartment = async (userId: number, departmentId: numb
   });
   return !!userDepartment;
 };
+
+export const getDepartmentIdByUserId = async (userId: number): Promise<number | null> => {
+  const userDepartment = await UserDepartment.findOne({
+    where: {
+      UserId: userId,
+    },
+  });
+  return userDepartment ? userDepartment.DepartmentId : null;
+};
