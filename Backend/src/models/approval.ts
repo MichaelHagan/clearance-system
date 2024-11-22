@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/database'; // Adjust the import based on your project structure
+import User from './user';
 
 export interface ApprovalAttributes {
   id: number;
@@ -8,6 +9,7 @@ export interface ApprovalAttributes {
   comments: string;
   DepartmentId: number;
   ClearanceRequestId: number;
+  user?: User; // Add user attribute
 }
 
 export interface ApprovalCreationAttributes extends Optional<ApprovalAttributes, 'id'> {}
@@ -19,6 +21,7 @@ class Approval extends Model<ApprovalAttributes, ApprovalCreationAttributes> imp
   public comments!: string;
   public DepartmentId!: number;
   public ClearanceRequestId!: number;
+  public user?: User; // Add user attribute
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
