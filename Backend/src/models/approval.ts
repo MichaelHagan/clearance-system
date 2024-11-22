@@ -10,6 +10,7 @@ export interface ApprovalAttributes {
   DepartmentId: number;
   ClearanceRequestId: number;
   user?: User; // Add user attribute
+  departmentName?: string; // Add departmentName attribute
 }
 
 export interface ApprovalCreationAttributes extends Optional<ApprovalAttributes, 'id'> {}
@@ -22,6 +23,7 @@ class Approval extends Model<ApprovalAttributes, ApprovalCreationAttributes> imp
   public DepartmentId!: number;
   public ClearanceRequestId!: number;
   public user?: User; // Add user attribute
+  public departmentName?: string; // Add departmentName attribute
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

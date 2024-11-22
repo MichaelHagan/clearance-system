@@ -5,6 +5,7 @@ import { ApprovalCreationAttributes } from '@src/models/approval';
 import ClearanceRequestService from './ClearanceRequestService';
 import UserService from './UserService';
 import User from '@src/models/user';
+import DepartmentService from './DepartmentService';
 
 /**
  * Get all approvals.
@@ -97,7 +98,14 @@ const getAllByUserId = async (userId: number) => {
   if (!clearanceRequest) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Clearance request not found for user');
   }
-  return getAllByClearanceRequestId(clearanceRequest.id);
+  const approvals = await getAllByClearanceRequestId(clearanceRequest.id);
+  for (let approval of approvals) {
+    const department = await DepartmentService.getOneById(approval.DepartmentId);
+    if (department) {
+      approval.dataValues.departmentName = department.name;
+    }
+  }
+  return approvals;
 };
 
 export default {
