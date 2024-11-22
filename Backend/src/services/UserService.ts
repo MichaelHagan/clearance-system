@@ -24,11 +24,12 @@ const loginUser = async (identifier: string | null, password: string) => {
 
   if (await bcrypt.compare(password, row.password)) {
     const DepartmentId = await getDepartmentIdByUserId(row.id);
+    const roleName = await getRoleTypeById(row.RoleId);
     const user = {
       id: row.id,
       userName: row.userName,
       role: row.RoleId, 
-      roleName: getRoleTypeById(row.RoleId),
+      roleName: roleName,
       firstName: row.firstName, 
       lastName: row.lastName,
       DepartmentId: DepartmentId || null,
