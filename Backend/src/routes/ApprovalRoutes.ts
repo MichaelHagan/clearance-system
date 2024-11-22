@@ -24,7 +24,7 @@ router.get('/user/:userId', authenticate, getApprovalsByUserId);
 router.get('/department/:departmentId', authenticate, getApprovalsByDepartmentId);
 
 // Update an approval by ID
-router.put('/:id', authenticate, authorize('2'), updateApproval);
+router.put('/:id', authenticate, updateApproval);
 
 // Delete an approval by ID
 router.delete('/:id', authenticate, deleteApproval);

@@ -3,7 +3,8 @@ import HttpStatusCodes from '../common/HttpStatusCodes';
 import ApprovalRepo from '@src/repos/ApprovalRepo';
 import { ApprovalCreationAttributes } from '@src/models/approval';
 import ClearanceRequestService from './ClearanceRequestService';
-import { userBelongsToDepartment } from '../repos/UserDepartmentRepo';
+import UserService from './UserService';
+import User from '@src/models/user';
 
 /**
  * Get all approvals.
@@ -29,23 +30,24 @@ const addOne = async (approval: ApprovalCreationAttributes) => {
 /**
  * Update one approval.
  */
-const updateOne = async (approval: ApprovalCreationAttributes, id: number, userId: number) => {
+const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
   const persists = await ApprovalRepo.persists(id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Approval not found');
   }
 
-  // Check if the user belongs to the department of the approval
-  const userDepartment = await userBelongsToDepartment(userId, approval.DepartmentId);
+  // // Check if the user belongs to the department of the approval
+  // const userDepartment = await userBelongsToDepartment(userId, approval.DepartmentId);
 
-  if (!userDepartment) {
-    throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User does not belong to the department of the approval');
-  }
+  // if (!userDepartment) {
+  //   throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User does not belong to the department of the approval');
+  // }
 
   // Update the approval date if status is approved
   if (approval.status === 'approved') {
     approval.approval_date = new Date();
   }
+  approval.id = id;
 
   // Update the approval
   return ApprovalRepo.update(approval);
@@ -74,7 +76,17 @@ const getAllByClearanceRequestId = async (ClearanceRequestId: number) => {
  * Get all approvals by department ID.
  */
 const getAllByDepartmentId = async (departmentId: number) => {
-  return ApprovalRepo.getAllByDepartmentId(departmentId);
+  let approvals = await ApprovalRepo.getAllByDepartmentId(departmentId);
+  for (let approval of approvals) {
+    const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
+    if (clearanceRequest) {
+      const user = await UserService.getOneById(clearanceRequest.UserId);
+    
+      approval.dataValues.user = user.dataValues as unknown as User;
+    }
+        
+  }
+  return approvals;
 };
 
 /**
