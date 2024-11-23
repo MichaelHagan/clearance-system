@@ -16,10 +16,12 @@ const getAll = async () => {
     const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
     if (clearanceRequest) {
       const user = await UserService.getOneById(clearanceRequest.UserId);
-    
+      const department = await DepartmentService.getOneById(approval.DepartmentId);
       approval.dataValues.user = user.dataValues as unknown as User;
+      if (department) {
+        approval.dataValues.departmentName = department.name;
+      }
     }
-        
   }
   return approvals;
 };
@@ -92,10 +94,9 @@ const getAllByDepartmentId = async (departmentId: number) => {
     const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
     if (clearanceRequest) {
       const user = await UserService.getOneById(clearanceRequest.UserId);
-    
       approval.dataValues.user = user.dataValues as unknown as User;
+      approval.dataValues.departmentName = (await DepartmentService.getOneById(departmentId))?.name;
     }
-        
   }
   return approvals;
 };
