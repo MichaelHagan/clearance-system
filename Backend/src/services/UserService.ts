@@ -13,7 +13,12 @@ import DepartmentService from './DepartmentService';
  * Get all users.
  */
 const getAll = async () => {
-  return UserRepo.getAll();
+  const users = await UserRepo.getAll();
+  return Promise.all(users.map(async (user) => {
+    const roleName = await getRoleTypeById(user.RoleId);
+    user.dataValues.roleName = roleName;
+    return user; 
+  }));
 };
 
 const loginUser = async (identifier: string | null, password: string) => {

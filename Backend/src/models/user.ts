@@ -15,6 +15,7 @@ export interface UserAttributes {
   phoneNumber: string;
   password: string;
   RoleId: number;
+  roleName?: string | null; // Update roleName type to string | null
 }
 
 export interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {
@@ -32,6 +33,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public phoneNumber!: string;
   public password!: string;
   public RoleId!: number;
+  public roleName?: string | null; // Update roleName type to string | null
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
