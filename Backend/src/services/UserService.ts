@@ -74,8 +74,8 @@ const addOne = async (user: UserCreationAttributes) => {
 /**
  * Update one user.
  */
-const updateOne = async (user: UserAttributes) => {
-  const persists = await UserRepo.persists(user.id);
+const updateOne = async (user: UserCreationAttributes, id: number) => {
+  const persists = await UserRepo.persists(id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'User not found');
   }
@@ -84,8 +84,12 @@ const updateOne = async (user: UserAttributes) => {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
+  if(user.RoleId == 2 && user.DepartmentId) {
+    await addUserDepartmentPair(id, user.DepartmentId);
+  }
+
   // Update the user
-  return UserRepo.update(user);
+  return UserRepo.update({id, ...user});
 };
 
 /**

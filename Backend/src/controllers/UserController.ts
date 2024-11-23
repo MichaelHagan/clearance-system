@@ -56,7 +56,9 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
 // Update a user by ID
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await UserService.updateOne(req.body);
+    const userdetails = req.body;
+    const userId = req.params.id;
+    await UserService.updateOne(userdetails, Number(userId));
     const updatedUser = await UserService.getOneById(Number(req.params.id));
     if (updatedUser) {
       res.status(200).json(updatedUser);
