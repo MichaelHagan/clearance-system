@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
-import { CircleX, SquareMenu } from "lucide-react";
+import { CircleX } from "lucide-react";
 import axios from "axios";
 import { baseURL, getToken } from "../utils/helperFunctions";
 import ModalComponent from "../components/ModalComponent";
 import AddDept from "./AddDept";
+import Header from "../components/Header";
 
 const ManageDepartment = () => {
   // Manage Depts.
@@ -22,6 +23,7 @@ const ManageDepartment = () => {
 
   const navigate = useNavigate();
   const [departmentsData, setDeptData] = useState([]);
+  const authUser = JSON.parse(localStorage.getItem("authUser"));
 
   useEffect(() => {
     const loginUser = sessionStorage.getItem("authenticated");
@@ -64,16 +66,10 @@ const ManageDepartment = () => {
       {/* Main Content */}
       <div className="flex-1 p-4 md:p-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-[7rem]">
-          <div className="flex gap-3 items-center">
-            <p className={"p-3 bg-blue-400 rounded"}>
-              <SquareMenu className={"block text-white"} />
-            </p>
-            <h1 className="text-xl md:text-2xl font-bold text-blue-600 mb-2 md:mb-0">
-              Manage Departments
-            </h1>
-          </div>
-        </div>
+        <Header
+          header_name={`Manage Departments`}
+          name={`${authUser.firstName} ${authUser.lastName}`}
+        />
         <div>
           <button
             className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors mb-4"
