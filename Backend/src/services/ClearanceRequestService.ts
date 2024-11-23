@@ -42,7 +42,7 @@ const addOne = async (clearanceRequest: ClearanceRequestCreationAttributes) => {
     throw new RouteError(HttpStatusCodes.CONFLICT, 'Clearance request already exists');
   }
   const newClearanceRequest = await ClearanceRequestRepo.add(clearanceRequest);
-  await addApprovalsForClearanceRequest(newClearanceRequest.id);
+  await addApprovalsForClearanceRequest(newClearanceRequest.id, clearanceRequest.type);
   return newClearanceRequest;
 };
 

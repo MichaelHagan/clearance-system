@@ -1,4 +1,3 @@
-
 import { QueryInterface } from 'sequelize';
 import Department from '../models/department';
 
@@ -12,7 +11,12 @@ const seed = async (): Promise<{ name: string }[]> => {
     { name: 'Police Post' },
     { name: 'Games Union' },
     { name: 'University Hospital' },
-    { name: 'University Bursar' }
+    { name: 'University Bursar' },
+    { name: 'IT Manager' },
+    { name: 'Director Training' },
+    { name: 'Course Director' },
+    { name: 'Stores' },
+    { name: 'Head of Transport' }
   ];
 };
 
