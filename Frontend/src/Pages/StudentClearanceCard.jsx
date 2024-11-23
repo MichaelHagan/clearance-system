@@ -117,11 +117,11 @@ const StudentClearanceCard = () => {
           </div>
 
           {/* Student Clearance Status */}
-          <div className="bg-white p-6 rounded-lg shadow-md h-[87vh]">
+          <div className="bg-white p-6 rounded-lg shadow-md h-[87vh] ">
             <h3 className="text-lg md:text-xl font-bold mb-10 text-blue-600">
               CLEARANCE STATUS
             </h3>
-            <div className="flex flex-col justify-between gap-5 p-7 bg-[#e5eaf5] h-[74vh] ">
+            <div className="flex flex-col justify-between gap-5 p-7 bg-[#e5eaf5] h-[74vh] overflow-auto">
               <div className="flex border-b-2 border-[#989ca3] pb-3 font-bold">
                 <h1 className="flex flex-[0.6] ">Clearance Unit</h1>
                 <h1>Status</h1>
