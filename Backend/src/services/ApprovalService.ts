@@ -11,7 +11,17 @@ import DepartmentService from './DepartmentService';
  * Get all approvals.
  */
 const getAll = async () => {
-  return ApprovalRepo.getAll();
+  let approvals = await ApprovalRepo.getAll();
+  for (let approval of approvals) {
+    const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
+    if (clearanceRequest) {
+      const user = await UserService.getOneById(clearanceRequest.UserId);
+    
+      approval.dataValues.user = user.dataValues as unknown as User;
+    }
+        
+  }
+  return approvals;
 };
 
 /**
