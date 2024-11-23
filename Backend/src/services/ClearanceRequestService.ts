@@ -3,12 +3,20 @@ import HttpStatusCodes from '../common/HttpStatusCodes';
 import ClearanceRequestRepo from '@src/repos/ClearanceRequestRepo';
 import { ClearanceRequestAttributes,ClearanceRequestCreationAttributes } from '@src/models/clearance-request';
 import addApprovalsForClearanceRequest from '../utils/addApprovals';
+import UserService from './UserService'; // Add this import
+import User from '../models/user';
+
 
 /**
  * Get all clearance requests.
  */
 const getAll = async () => {
-  return ClearanceRequestRepo.getAll();
+  const clearanceRequests = await ClearanceRequestRepo.getAll();
+  return Promise.all(clearanceRequests.map(async (request) => {
+    const user = await UserService.getOneById(request.UserId);
+    request.dataValues.user = user.dataValues as unknown as User;
+    return request;
+  }));
 };
 
 /**
