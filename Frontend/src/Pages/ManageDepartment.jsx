@@ -58,10 +58,6 @@ const ManageDepartment = () => {
       console.log(error);
     }
   };
-
-  const updateDeptData = (data) => {
-    setDeptData(departmentsData.push(data));
-  };
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-100 mx-[10rem]">
       <NavBar />

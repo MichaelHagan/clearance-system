@@ -24,7 +24,6 @@ const ManageUsers = () => {
             Authorization: `Bearer ${getToken()}`,
           },
         });
-        console.log(response.data, "dataaaa");
         setUserDetails(response.data);
       } catch (error) {
         console.log(error);
@@ -75,6 +74,7 @@ const ManageUsers = () => {
                   <th className="py-2 px-4 border-b">Email</th>
                   <th className="py-2 px-4 border-b">Gender Name</th>
                   <th className="py-2 px-4 border-b">Phone Number</th>
+                  <th className="py-2 px-4 border-b">Role</th>
                   <th className="py-2 px-4 border-b">Action</th>
                 </tr>
               </thead>
@@ -88,6 +88,7 @@ const ManageUsers = () => {
                     <td className="py-2 px-4 border-b">{user?.email}</td>
                     <td className="py-2 px-4 border-b">{user?.gender}</td>
                     <td className="py-2 px-4 border-b">{user?.phoneNumber}</td>
+                    <td className="py-2 px-4 border-b">{user?.roleName}</td>
                     <td className="py-2 px-4 border-b">
                       <button className="text-blue-600 font-semibold hover:underline">
                         Edit
