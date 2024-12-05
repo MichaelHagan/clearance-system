@@ -6,6 +6,8 @@ import ClearanceRequestService from './ClearanceRequestService';
 import UserService from './UserService';
 import User from '@src/models/user';
 import DepartmentService from './DepartmentService';
+import { sendMail } from '@src/utils/emailHelper';
+import checkAndNotifyFinalClearance from '../utils/finalClearanceHelper';
 
 /**
  * Get all approvals.
@@ -49,13 +51,6 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Approval not found');
   }
 
-  // // Check if the user belongs to the department of the approval
-  // const userDepartment = await userBelongsToDepartment(userId, approval.DepartmentId);
-
-  // if (!userDepartment) {
-  //   throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User does not belong to the department of the approval');
-  // }
-
   // Update the approval date if status is approved
   if (approval.status === 'approved') {
     approval.approval_date = new Date();
@@ -63,7 +58,22 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
   approval.id = id;
 
   // Update the approval
-  return ApprovalRepo.update(approval);
+  const updatedApproval = await ApprovalRepo.update(approval);
+
+  // Fetch the clearance request and user details
+  const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
+  const user = await UserService.getOneById(clearanceRequest?.UserId!);
+  const department = await DepartmentService.getOneById(approval.DepartmentId);
+
+  // Send email notification
+  const subject = `Your clearance request has been ${approval.status}`;
+  const message = `Dear ${user.firstName},\n\nYour clearance request from the ${department?.name} department has been ${approval.status}.\n\nBest Regards,\nKAIPTC Team`;
+  await sendMail(user.email!, subject, message);
+
+  // Check and notify final clearance
+  await checkAndNotifyFinalClearance(user.email!, user.firstName!, approval.ClearanceRequestId);
+
+  return updatedApproval;
 };
 
 /**
