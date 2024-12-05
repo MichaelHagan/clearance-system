@@ -1,13 +1,14 @@
 import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '../common/HttpStatusCodes';
 import UserRepo from '@src/repos/UserRepo';
-import { UserAttributes, UserCreationAttributes } from '@src/models/user';
+import { UserCreationAttributes } from '@src/models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { addUserDepartmentPair, getDepartmentIdByUserId } from '../repos/UserDepartmentRepo';
 import ClearanceRequestService from './ClearanceRequestService';
 import { getRoleTypeById } from '@src/utils/getRoleTypeById';
 import DepartmentService from './DepartmentService';
+import { sendMail } from '@src/utils/emailHelper';
 
 /**
  * Get all users.
@@ -62,6 +63,11 @@ const addOne = async (user: UserCreationAttributes) => {
   if(user.RoleId == 3 || user.RoleId == 4) {
     ClearanceRequestService.addOne({ status:'pending', type: (user.RoleId == 3? 'staff':'student'), UserId: newUser.id });
   }
+
+  // Send welcome email
+  const subject = 'Welcome to KAIPTC Clearance System';
+  const message = 'Dear User,\n\nWelcome to the KAIPTC Clearance System. We are glad to have you on board.\n\nBest Regards,\nKAIPTC Team';
+  await sendMail(newUser.email!, subject, message);
 
   const DepartmentId = await getDepartmentIdByUserId(newUser.id);
   return {
