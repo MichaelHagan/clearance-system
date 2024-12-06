@@ -17,7 +17,7 @@ const StudentClearanceCard = () => {
 
   const authUser = JSON.parse(localStorage.getItem("authUser"));
   useEffect(() => {
-    if (!loginUser) {
+    if (loginUser == null || "false") {
       return navigate("/login");
     }
     const getData = async () => {
@@ -54,7 +54,7 @@ const StudentClearanceCard = () => {
         {/* Header */}
         <Header
           header_name={`Clearance Card`}
-          name={`${authUser.firstName} ${authUser.lastName}`}
+          name={`${authUser?.firstName} ${authUser?.lastName}`}
         />
 
         {/* Progress Bar */}

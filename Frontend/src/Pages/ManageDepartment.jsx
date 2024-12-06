@@ -68,7 +68,7 @@ const ManageDepartment = () => {
         {/* Header */}
         <Header
           header_name={`Manage Departments`}
-          name={`${authUser.firstName} ${authUser.lastName}`}
+          name={`${authUser?.firstName} ${authUser?.lastName}`}
         />
         <div>
           <button
