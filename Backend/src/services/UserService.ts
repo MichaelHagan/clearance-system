@@ -66,7 +66,7 @@ const addOne = async (user: UserCreationAttributes) => {
 
   // Send welcome email
   const subject = 'Welcome to KAIPTC Clearance System';
-  const message = 'Dear User,\n\nWelcome to the KAIPTC Clearance System. We are glad to have you on board.\n\nBest Regards,\nKAIPTC Team';
+  const message = `Dear ${user.firstName},\n\nWelcome to the KAIPTC Clearance System. We are glad to have you on board.\n\nBest Regards,\nKAIPTC Team`;
   await sendMail(newUser.email!, subject, message);
 
   const DepartmentId = await getDepartmentIdByUserId(newUser.id);
