@@ -46,8 +46,8 @@ const addOne = async (approval: ApprovalCreationAttributes) => {
  * Update one approval.
  */
 const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
-  const persists = await ApprovalRepo.persists(id);
-  if (!persists) {
+  const currentApproval = await ApprovalRepo.getOneById(id);
+  if (!currentApproval) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Approval not found');
   }
 
@@ -61,9 +61,9 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
   const updatedApproval = await ApprovalRepo.update(approval);
 
   // Fetch the clearance request and user details
-  const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
+  const clearanceRequest = await ClearanceRequestService.getOneById(currentApproval.ClearanceRequestId);
   const user = await UserService.getOneById(clearanceRequest?.UserId!);
-  const department = await DepartmentService.getOneById(approval.DepartmentId);
+  const department = await DepartmentService.getOneById(currentApproval.DepartmentId);
 
   // Send email notification
   const subject = `Your clearance request has been ${approval.status}`;
