@@ -69,7 +69,7 @@ const ManageUsers = () => {
         {/* Header */}
         <Header
           header_name={`Manager Users`}
-          name={`${authUser.firstName} ${authUser.lastName}`}
+          name={`${authUser?.firstName} ${authUser?.lastName}`}
         />
         <div>
           <div className={"bg-white p-3"}>

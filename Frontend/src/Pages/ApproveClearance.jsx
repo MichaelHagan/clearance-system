@@ -118,7 +118,7 @@ const ApproveClearance = () => {
                   ? `${authUser?.department?.name}`
                   : `${authUser?.roleName}`
               }`}
-          name={`${authUser.firstName} ${authUser.lastName}`}
+          name={`${authUser?.firstName} ${authUser?.lastName}`}
         />
         <div>
           <div className={"bg-white p-3"}>
