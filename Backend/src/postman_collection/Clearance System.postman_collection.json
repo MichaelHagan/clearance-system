@@ -70,6 +70,42 @@
 					"response": []
 				},
 				{
+					"name": "DeleteUserById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMzNDMxOTg5LCJleHAiOjE3MzM0NDk5ODl9.PfBsMsCJL_PywbpntC9o7OUra3NBeBFVwByuBKYXA4M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwiZmlyc3ROYW1lIjoiQWRtaW4iLCJsYXN0TmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxMjU3NTQ3LCJleHAiOjE3MzEyNzU1NDd9.Li7aUbNcFJiSCiOGMv1PK8mv5YS2hZXVYLXoJ-vdZZc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/users/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"users",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetAllUsers",
 					"request": {
 						"auth": {
@@ -77,7 +113,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMyMzgyODU3LCJleHAiOjE3MzI0MDA4NTd9.QClsIYjOgVKkD6Fuem-4WIHDptqE1PNSnqorsJz5SA8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMzNDMxOTg5LCJleHAiOjE3MzM0NDk5ODl9.PfBsMsCJL_PywbpntC9o7OUra3NBeBFVwByuBKYXA4M",
 									"type": "string"
 								}
 							]
@@ -86,7 +122,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3MzA2NjA2NjR9._lxigaRY7LqBm6dfheyEV2R5vYvqgz9e6gukjTFECw8",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMzNDMxOTI5LCJleHAiOjE3MzM0NDk5Mjl9.lQaqrkg26_N18PSeakel7i6JP0Z5JvvpV8bPQNHjrqc",
 								"type": "text"
 							}
 						],
@@ -187,7 +223,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOnt9LCJmaXJzdE5hbWUiOiJBZG1pbiIsImxhc3ROYW1lIjoiQWRtaW4iLCJEZXBhcnRtZW50SWQiOm51bGwsImRlcGFydG1lbnQiOm51bGwsImlhdCI6MTczMjMwMTkyMywiZXhwIjoxNzMyMzE5OTIzfQ.HFJgVdu7tpR5Wd6z6A32B9-Uh4XB1jMVWICSmD6TJK8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMzNDQ0MTcwLCJleHAiOjE3MzM0NjIxNzB9.kJCGb4NiqWLmz7vhu4y_uYh6a3c2lyaK9M0jmYAU4Xg",
 									"type": "string"
 								}
 							]
@@ -264,7 +300,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMyMzgyODU3LCJleHAiOjE3MzI0MDA4NTd9.QClsIYjOgVKkD6Fuem-4WIHDptqE1PNSnqorsJz5SA8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMzNDQ0MTcwLCJleHAiOjE3MzM0NjIxNzB9.kJCGb4NiqWLmz7vhu4y_uYh6a3c2lyaK9M0jmYAU4Xg",
 									"type": "string"
 								}
 							]
@@ -281,7 +317,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8090/approvals/user/7",
+							"raw": "http://localhost:8090/approvals/user/12",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -290,7 +326,52 @@
 							"path": [
 								"approvals",
 								"user",
-								"7"
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateApproval",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6MSwicm9sZU5hbWUiOiJhZG1pbiIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsIkRlcGFydG1lbnRJZCI6bnVsbCwiZGVwYXJ0bWVudCI6bnVsbCwiaWF0IjoxNzMzNDQ0MTcwLCJleHAiOjE3MzM0NjIxNzB9.kJCGb4NiqWLmz7vhu4y_uYh6a3c2lyaK9M0jmYAU4Xg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"status\":\"rejected\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/approvals/80?id=80",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"approvals",
+								"80"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "80"
+								}
 							]
 						}
 					},

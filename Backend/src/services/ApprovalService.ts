@@ -64,14 +64,16 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
   const clearanceRequest = await ClearanceRequestService.getOneById(currentApproval.ClearanceRequestId);
   const user = await UserService.getOneById(clearanceRequest?.UserId!);
   const department = await DepartmentService.getOneById(currentApproval.DepartmentId);
-
+  
   // Send email notification
+  const email = user.dataValues?.email;
+  const firstName = user.dataValues?.firstName;
   const subject = `Your clearance request has been ${approval.status}`;
-  const message = `Dear ${user.firstName},\n\nYour clearance request from the ${department?.name} department has been ${approval.status}.\n\nBest Regards,\nKAIPTC Team`;
-  await sendMail(user.email!, subject, message);
+  const message = `Dear ${firstName},\n\nYour clearance request from the ${department?.name} department has been ${approval.status}.\n\nBest Regards,\nKAIPTC Team`;
+  await sendMail(email!, subject, message);
 
   // Check and notify final clearance
-  await checkAndNotifyFinalClearance(user.email!, user.firstName!, approval.ClearanceRequestId);
+  await checkAndNotifyFinalClearance(email!, firstName!, currentApproval.ClearanceRequestId);
 
   return updatedApproval;
 };
