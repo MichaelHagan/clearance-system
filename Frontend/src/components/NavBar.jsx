@@ -34,7 +34,10 @@ const NavBar = () => {
           }`}
         >
           {<House size={24} />}
-          <a href={"/"} className="block font-medium hover:text-blue-500">
+          <a
+            href={"/dashboard"}
+            className="block font-medium hover:text-blue-500"
+          >
             {"Home"}
           </a>
         </div>

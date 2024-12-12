@@ -9,15 +9,14 @@ import Header from "../components/Header";
 
 const StudentClearanceCard = () => {
   const navigate = useNavigate();
-
-  const loginUser = sessionStorage.getItem("authenticated");
-
   const [userDetials, setUserDetails] = useState({});
   const [clearanceData, setclearanceData] = useState([]);
 
   const authUser = JSON.parse(localStorage.getItem("authUser"));
   useEffect(() => {
-    if (loginUser == null || "false") {
+    const loginUser = sessionStorage.getItem("authenticated");
+    if (!loginUser) {
+      window.alert("Not Authenticated");
       return navigate("/login");
     }
     const getData = async () => {

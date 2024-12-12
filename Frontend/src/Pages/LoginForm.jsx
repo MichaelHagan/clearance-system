@@ -18,7 +18,6 @@ const StudentLogin = () => {
         password,
       });
 
-      console.log(response);
       sessionStorage.setItem("authenticated", true);
       setToken(response?.data);
       const decode = decodedToken(response.data);
@@ -28,11 +27,10 @@ const StudentLogin = () => {
       } else if (decode?.roleName === "department_staff") {
         navigate("/manage-dept");
       } else {
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error) {
       // Handle the error
-      console.error("Error:", error);
       setErrorMessage("Login failed. Please check your credentials.");
     }
   };

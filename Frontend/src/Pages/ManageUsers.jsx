@@ -57,7 +57,6 @@ const ManageUsers = () => {
       setUserDetails(userDetials.filter((data) => data.id !== e?.target?.id));
     } catch (error) {
       window.alert("Something went wrong");
-      console.log(error);
     }
   };
   return (
