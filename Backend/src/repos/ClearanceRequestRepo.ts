@@ -1,4 +1,4 @@
-import { ClearanceRequestAttributes, ClearanceRequestCreationAttributes } from '../models/clearance-request';
+import { ClearanceRequestCreationAttributes, ClearanceRequestUpdateAttributes } from '../models/clearance-request';
 import ClearanceRequest from '../models/clearance-request';
 
 // **** Functions **** //
@@ -44,7 +44,7 @@ const add = async (clearanceRequest: ClearanceRequestCreationAttributes) => {
 /**
  * Update a clearance request.
  */
-const update = async (clearanceRequest: ClearanceRequestAttributes) => {
+const update = async (clearanceRequest: ClearanceRequestUpdateAttributes) => {
   await ClearanceRequest.update(clearanceRequest, { where: { id: clearanceRequest.id } });
 }
 
