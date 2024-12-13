@@ -52,7 +52,8 @@ export const getClearanceRequestByUserId = async (req: Request, res: Response, n
 // Update a clearance request by ID
 export const updateClearanceRequest = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await ClearanceRequestService.updateOne(req.body);
+    let {id} = req.params;
+    await ClearanceRequestService.updateOne(req.body, parseInt(id));
     const updatedClearanceRequest = await ClearanceRequestService.getOneById(Number(req.params.id));
     if (updatedClearanceRequest) {
       res.status(200).json(updatedClearanceRequest);
