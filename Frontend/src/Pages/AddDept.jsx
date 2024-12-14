@@ -23,7 +23,6 @@ const AddDept = ({ closeModal }) => {
       window.location.reload();
     } catch (error) {
       // Handle the error
-      console.error("Error:", error);
       setErrorMessage("Check your credentials");
     }
   };

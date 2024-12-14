@@ -2,22 +2,21 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
-
-import { Ban, Check, Loader, SquareMenu } from "lucide-react";
+import { Ban, Check, Loader } from "lucide-react";
 import axios from "axios";
 import { baseURL, getToken } from "../utils/helperFunctions";
+import Header from "../components/Header";
 
 const StudentClearanceCard = () => {
   const navigate = useNavigate();
-
-  const loginUser = sessionStorage.getItem("authenticated");
-
   const [userDetials, setUserDetails] = useState({});
   const [clearanceData, setclearanceData] = useState([]);
 
   const authUser = JSON.parse(localStorage.getItem("authUser"));
   useEffect(() => {
+    const loginUser = sessionStorage.getItem("authenticated");
     if (!loginUser) {
+      window.alert("Not Authenticated");
       return navigate("/login");
     }
     const getData = async () => {
@@ -52,22 +51,13 @@ const StudentClearanceCard = () => {
       {/* Main Content */}
       <div className="flex-1 p-4 md:p-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
-          <div className="flex gap-3 items-center">
-            <p className={"p-3 bg-blue-400 rounded"}>
-              <SquareMenu className={"block text-white"} />
-            </p>
-            <h1 className="text-xl md:text-2xl font-bold text-blue-600 mb-2 md:mb-0">
-              Clearance Card
-            </h1>
-          </div>
-          <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors">
-            Print
-          </button>
-        </div>
+        <Header
+          header_name={`Clearance Card`}
+          name={`${authUser?.firstName} ${authUser?.lastName}`}
+        />
 
         {/* Progress Bar */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <h2 className="text-lg font-semibold mb-2">Clearance Progress</h2>
           <div className="bg-gray-300 rounded-full h-4">
             <div
@@ -77,7 +67,7 @@ const StudentClearanceCard = () => {
               <span className="sr-only">100% cleared</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Student Details and Status */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -126,11 +116,11 @@ const StudentClearanceCard = () => {
           </div>
 
           {/* Student Clearance Status */}
-          <div className="bg-white p-6 rounded-lg shadow-md h-[87vh]">
+          <div className="bg-white p-6 rounded-lg shadow-md h-[87vh] ">
             <h3 className="text-lg md:text-xl font-bold mb-10 text-blue-600">
               CLEARANCE STATUS
             </h3>
-            <div className="flex flex-col justify-between gap-5 p-7 bg-[#e5eaf5] h-[74vh] ">
+            <div className="flex flex-col justify-between gap-5 p-7 bg-[#e5eaf5] h-[74vh] overflow-auto">
               <div className="flex border-b-2 border-[#989ca3] pb-3 font-bold">
                 <h1 className="flex flex-[0.6] ">Clearance Unit</h1>
                 <h1>Status</h1>

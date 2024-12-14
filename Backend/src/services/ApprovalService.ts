@@ -6,12 +6,26 @@ import ClearanceRequestService from './ClearanceRequestService';
 import UserService from './UserService';
 import User from '@src/models/user';
 import DepartmentService from './DepartmentService';
+import { sendMail } from '@src/utils/emailHelper';
+import checkAndNotifyFinalClearance from '../utils/finalClearanceHelper';
 
 /**
  * Get all approvals.
  */
 const getAll = async () => {
-  return ApprovalRepo.getAll();
+  let approvals = await ApprovalRepo.getAll();
+  for (let approval of approvals) {
+    const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
+    if (clearanceRequest) {
+      const user = await UserService.getOneById(clearanceRequest.UserId);
+      const department = await DepartmentService.getOneById(approval.DepartmentId);
+      approval.dataValues.user = user.dataValues as unknown as User;
+      if (department) {
+        approval.dataValues.departmentName = department.name;
+      }
+    }
+  }
+  return approvals;
 };
 
 /**
@@ -32,17 +46,10 @@ const addOne = async (approval: ApprovalCreationAttributes) => {
  * Update one approval.
  */
 const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
-  const persists = await ApprovalRepo.persists(id);
-  if (!persists) {
+  const currentApproval = await ApprovalRepo.getOneById(id);
+  if (!currentApproval) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Approval not found');
   }
-
-  // // Check if the user belongs to the department of the approval
-  // const userDepartment = await userBelongsToDepartment(userId, approval.DepartmentId);
-
-  // if (!userDepartment) {
-  //   throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User does not belong to the department of the approval');
-  // }
 
   // Update the approval date if status is approved
   if (approval.status === 'approved') {
@@ -51,7 +58,24 @@ const updateOne = async (approval: ApprovalCreationAttributes, id: number) => {
   approval.id = id;
 
   // Update the approval
-  return ApprovalRepo.update(approval);
+  const updatedApproval = await ApprovalRepo.update(approval);
+
+  // Fetch the clearance request and user details
+  const clearanceRequest = await ClearanceRequestService.getOneById(currentApproval.ClearanceRequestId);
+  const user = await UserService.getOneById(clearanceRequest?.UserId!);
+  const department = await DepartmentService.getOneById(currentApproval.DepartmentId);
+  
+  // Send email notification
+  const email = user.dataValues?.email;
+  const firstName = user.dataValues?.firstName;
+  const subject = `Your clearance request has been ${approval.status}`;
+  const message = `Dear ${firstName},\n\nYour clearance request from the ${department?.name} department has been ${approval.status}.\n\nBest Regards,\nKAIPTC Team`;
+  sendMail(email!, subject, message);
+
+  // Check and notify final clearance
+  checkAndNotifyFinalClearance(email!, firstName!, currentApproval.ClearanceRequestId);
+
+  return updatedApproval;
 };
 
 /**
@@ -82,10 +106,9 @@ const getAllByDepartmentId = async (departmentId: number) => {
     const clearanceRequest = await ClearanceRequestService.getOneById(approval.ClearanceRequestId);
     if (clearanceRequest) {
       const user = await UserService.getOneById(clearanceRequest.UserId);
-    
       approval.dataValues.user = user.dataValues as unknown as User;
+      approval.dataValues.departmentName = (await DepartmentService.getOneById(departmentId))?.name;
     }
-        
   }
   return approvals;
 };

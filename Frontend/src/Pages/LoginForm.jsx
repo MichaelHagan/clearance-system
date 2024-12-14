@@ -17,7 +17,7 @@ const StudentLogin = () => {
         identifier: matricNumber,
         password,
       });
-      console.log(response, "response");
+
       sessionStorage.setItem("authenticated", true);
       setToken(response?.data);
       const decode = decodedToken(response.data);
@@ -25,13 +25,12 @@ const StudentLogin = () => {
       if (decode?.roleName === "admin") {
         navigate("/manage-users");
       } else if (decode?.roleName === "department_staff") {
-        navigate("/manage-dept");
+        navigate("/approve");
       } else {
-        navigate("/login");
+        navigate("/dashboard");
       }
     } catch (error) {
       // Handle the error
-      console.error("Error:", error);
       setErrorMessage("Login failed. Please check your credentials.");
     }
   };

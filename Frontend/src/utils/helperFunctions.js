@@ -47,7 +47,8 @@ export const getMenuVisibility = (role, menuItem) => {
 
   if (
     (role === "student" && menuItem === "manage_department") ||
-    (role === "staff" && menuItem === "manage_department")
+    (role === "staff" && menuItem === "manage_department") ||
+    (role === "department_staff" && menuItem === "manage_department")
   ) {
     return "hidden"; // Student or staff cannot see "manage_user"
   }
@@ -68,4 +69,22 @@ export const replaceObjectInArray = (array, id, newStatus) => {
   );
 };
 
-export const baseURL = "http://localhost:8888";
+export const baseURL = "http://localhost:8090";
+
+export const generateID = (number) => {
+  const year = new Date().getFullYear().toString().slice(-2); // Last two digits of the year
+  const prefix = `${year}/U/`;
+  const suffix = "/EVE";
+
+  // Ensure the number is padded to 4 digits
+  const formattedNumber = number.toString().padStart(4, "0");
+
+  return `${prefix}${formattedNumber}${suffix}`;
+};
+
+export const capitalizeEachWord = (str) => {
+  return str
+    .split(" ") // Split the string into an array of words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
+    .join(" "); // Join the words back into a single string
+};

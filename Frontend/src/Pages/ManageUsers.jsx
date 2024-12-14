@@ -2,16 +2,29 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
-
-import { SquareMenu } from "lucide-react";
+import { CircleX } from "lucide-react";
 import axios from "axios";
 import { baseURL, getToken } from "../utils/helperFunctions";
+import ModalComponent from "../components/ModalComponent";
+import UpdateRole from "../components/UpdateRole";
+import Header from "../components/Header";
 
 const ManageUsers = () => {
   const navigate = useNavigate();
-
   const [userDetials, setUserDetails] = useState([]);
   const loginUser = sessionStorage.getItem("authenticated");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clickedUserId, setClickedUserId] = useState("");
+  const authUser = JSON.parse(localStorage.getItem("authUser"));
+
+  const openModal = (e) => {
+    setClickedUserId(e.target.id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (loginUser === "null") {
@@ -24,7 +37,6 @@ const ManageUsers = () => {
             Authorization: `Bearer ${getToken()}`,
           },
         });
-        console.log(response.data, "dataaaa");
         setUserDetails(response.data);
       } catch (error) {
         console.log(error);
@@ -45,7 +57,6 @@ const ManageUsers = () => {
       setUserDetails(userDetials.filter((data) => data.id !== e?.target?.id));
     } catch (error) {
       window.alert("Something went wrong");
-      console.log(error);
     }
   };
   return (
@@ -55,16 +66,10 @@ const ManageUsers = () => {
       {/* Main Content */}
       <div className="flex-1 p-4 md:p-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-[7rem]">
-          <div className="flex gap-3 items-center">
-            <p className={"p-3 bg-blue-400 rounded"}>
-              <SquareMenu className={"block text-white"} />
-            </p>
-            <h1 className="text-xl md:text-2xl font-bold text-blue-600 mb-2 md:mb-0">
-              Manager Users
-            </h1>
-          </div>
-        </div>
+        <Header
+          header_name={`Manager Users`}
+          name={`${authUser?.firstName} ${authUser?.lastName}`}
+        />
         <div>
           <div className={"bg-white p-3"}>
             <table className="min-w-full border-collapse">
@@ -75,6 +80,7 @@ const ManageUsers = () => {
                   <th className="py-2 px-4 border-b">Email</th>
                   <th className="py-2 px-4 border-b">Gender Name</th>
                   <th className="py-2 px-4 border-b">Phone Number</th>
+                  <th className="py-2 px-4 border-b">Role</th>
                   <th className="py-2 px-4 border-b">Action</th>
                 </tr>
               </thead>
@@ -88,8 +94,13 @@ const ManageUsers = () => {
                     <td className="py-2 px-4 border-b">{user?.email}</td>
                     <td className="py-2 px-4 border-b">{user?.gender}</td>
                     <td className="py-2 px-4 border-b">{user?.phoneNumber}</td>
+                    <td className="py-2 px-4 border-b">{user?.roleName}</td>
                     <td className="py-2 px-4 border-b">
-                      <button className="text-blue-600 font-semibold hover:underline">
+                      <button
+                        className="text-blue-600 font-semibold hover:underline"
+                        onClick={openModal}
+                        id={user?.id}
+                      >
                         Edit
                       </button>
                       {" | "}
@@ -108,6 +119,16 @@ const ManageUsers = () => {
           </div>
         </div>
       </div>
+      <ModalComponent
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        className={
+          "flex justify-center items-center h-screen bg-gray-100 overflow-y-auto"
+        }
+      >
+        <button onClick={closeModal}>{<CircleX />}</button>
+        <UpdateRole closeModal={closeModal} user_id={clickedUserId} />
+      </ModalComponent>
     </div>
   );
 };

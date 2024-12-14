@@ -1,7 +1,7 @@
 import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '../common/HttpStatusCodes';
 import ClearanceRequestRepo from '@src/repos/ClearanceRequestRepo';
-import { ClearanceRequestAttributes,ClearanceRequestCreationAttributes } from '@src/models/clearance-request';
+import { ClearanceRequestCreationAttributes, ClearanceRequestUpdateAttributes } from '@src/models/clearance-request';
 import addApprovalsForClearanceRequest from '../utils/addApprovals';
 import UserService from './UserService'; // Add this import
 import User from '../models/user';
@@ -42,21 +42,22 @@ const addOne = async (clearanceRequest: ClearanceRequestCreationAttributes) => {
     throw new RouteError(HttpStatusCodes.CONFLICT, 'Clearance request already exists');
   }
   const newClearanceRequest = await ClearanceRequestRepo.add(clearanceRequest);
-  await addApprovalsForClearanceRequest(newClearanceRequest.id);
+  await addApprovalsForClearanceRequest(newClearanceRequest.id, clearanceRequest.type);
   return newClearanceRequest;
 };
 
 /**
  * Update one clearance request.
  */
-const updateOne = async (clearanceRequest: ClearanceRequestAttributes) => {
-  const persists = await ClearanceRequestRepo.persists(clearanceRequest.id);
+const updateOne = async (clearanceRequest: ClearanceRequestUpdateAttributes, id: number) => {
+  const persists = await ClearanceRequestRepo.persists(id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Clearance request not found');
   }
 
   // Update the clearance request
-  return ClearanceRequestRepo.update(clearanceRequest);
+  const updatedClearanceRequest = await ClearanceRequestRepo.update({ id, ...clearanceRequest });
+  return updatedClearanceRequest
 };
 
 /**

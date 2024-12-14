@@ -1,13 +1,14 @@
 import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '../common/HttpStatusCodes';
 import UserRepo from '@src/repos/UserRepo';
-import { UserAttributes, UserCreationAttributes } from '@src/models/user';
+import { UserCreationAttributes } from '@src/models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { addUserDepartmentPair, getDepartmentIdByUserId } from '../repos/UserDepartmentRepo';
 import ClearanceRequestService from './ClearanceRequestService';
 import { getRoleTypeById } from '@src/utils/getRoleTypeById';
 import DepartmentService from './DepartmentService';
+import { sendMail } from '@src/utils/emailHelper';
 
 /**
  * Get all users.
@@ -63,6 +64,11 @@ const addOne = async (user: UserCreationAttributes) => {
     ClearanceRequestService.addOne({ status:'pending', type: (user.RoleId == 3? 'staff':'student'), UserId: newUser.id });
   }
 
+  // Send welcome email
+  const subject = 'Welcome to KAIPTC Clearance System';
+  const message = `Dear ${user.firstName},\n\nWelcome to the KAIPTC Clearance System. We are glad to have you on board.\n\nBest Regards,\nKAIPTC Team`;
+  sendMail(newUser.email!, subject, message);
+
   const DepartmentId = await getDepartmentIdByUserId(newUser.id);
   return {
     ...newUser,
@@ -74,8 +80,8 @@ const addOne = async (user: UserCreationAttributes) => {
 /**
  * Update one user.
  */
-const updateOne = async (user: UserAttributes) => {
-  const persists = await UserRepo.persists(user.id);
+const updateOne = async (user: UserCreationAttributes, id: number) => {
+  const persists = await UserRepo.persists(id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'User not found');
   }
@@ -84,8 +90,12 @@ const updateOne = async (user: UserAttributes) => {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
+  if(user.RoleId == 2 && user.DepartmentId) {
+    await addUserDepartmentPair(id, user.DepartmentId);
+  }
+
   // Update the user
-  return UserRepo.update(user);
+  return UserRepo.update({id, ...user});
 };
 
 /**
