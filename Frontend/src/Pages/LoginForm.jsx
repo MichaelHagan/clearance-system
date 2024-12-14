@@ -25,7 +25,7 @@ const StudentLogin = () => {
       if (decode?.roleName === "admin") {
         navigate("/manage-users");
       } else if (decode?.roleName === "department_staff") {
-        navigate("/manage-dept");
+        navigate("/approve");
       } else {
         navigate("/dashboard");
       }
